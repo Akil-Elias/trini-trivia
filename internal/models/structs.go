@@ -1,19 +1,34 @@
 package models
 
-import "github.com/jackc/pgx/pgtype"
+import (
+	"log"
+	"net/http"
+
+	"github.com/gofrs/uuid"
+	"github.com/jackc/pgx"
+)
 
 type User struct {
-	ID        pgtype.UUID
-	Email     string `json:"email"`
-	Name      string `json:"name"`
-	Gender    bool   `json:"gender"`
-	Highscore int    `json:"highscore"`
+	ID     uuid.UUID
+	Email  string `json:"email"`
+	Name   string `json:"name"`
+	Gender bool   `json:"gender"`
+	Rank   int    `json:"rank"`
+	Points int    `json:"points"`
 }
 
 type Question struct {
-	ID       pgtype.UUID
-	Level    int    `json:"level"`
-	Category string `json:"category"`
-	Number   int    `json:"number"`
-	Points   int    `json:"points"`
+	ID           uuid.UUID
+	Category     string   `json:"category"`
+	Number       int      `json:"number"`
+	Body         string   `json:"body"`
+	Answer       string   `json:"answer"`
+	WrongAnswers []string `json:"wrong_answers"`
+}
+
+type Server struct {
+	Addr   string
+	Logger *log.Logger
+	DB     *pgx.Conn
+	Router *http.ServeMux
 }
